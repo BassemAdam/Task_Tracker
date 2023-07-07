@@ -14,6 +14,7 @@ namespace Task_Tracker
 
     internal class Task
     {
+
         #region DataMembers
 
         static int NumberOfTasks;
@@ -28,6 +29,10 @@ namespace Task_Tracker
         private List<string> tags;
         private Status status;
         #endregion
+
+        //-----------------------------------------------Methods--------------------------------------------------------------
+
+        #region Properties
 
         public int UniqueIdentifier
         {
@@ -77,7 +82,7 @@ namespace Task_Tracker
             set => status = value;
         }
 
-        //-----------------------------------------------Methods--------------------------------------------------------------
+        #endregion
 
         #region Constructor
         public Task(string _title, string _description = "empty", TimeSpan _duration = default,
