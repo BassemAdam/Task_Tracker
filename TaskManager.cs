@@ -20,7 +20,7 @@ namespace Task_Tracker
             #region TestingTask
 
             Console.WriteLine("\n");
-            Console.WriteLine("this is the task with default values only the title was inputed by the user");
+            Console.WriteLine("this is the task with default values only the title was inputted by the user");
             Task task2 = new Task("Complete project");
             task2.Print();
 
