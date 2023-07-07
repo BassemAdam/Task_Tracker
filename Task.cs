@@ -30,6 +30,7 @@ namespace Task_Tracker
         #endregion
 
         //-----------------------------------------------Methods--------------------------------------------------------------
+
         #region Constructor
         public Task(string title, string description = "empty", TimeSpan duration = default,
             DateTime deadline = default, Priority priority = Priority.Medium, List<string> tags = null, Status status = Status.NotCompleted)
