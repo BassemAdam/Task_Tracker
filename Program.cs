@@ -10,8 +10,8 @@ namespace Task_Tracker // Note: actual namespace depends on the project name.
     {
         static void Main(string[] args)
         {
-            
-           Execute();
+            var tm = new TaskManager();
+            tm.Execute();
 
         }
     }

@@ -10,11 +10,18 @@ namespace Task_Tracker
     {
         private List<Task> ListOfTasks = new List<Task>();
 
-
+        enum UtilChoice
+        {
+            Add,
+            Edit,
+            Sort,
+            Filter,
+            Exit
+        }
 
         //-----------------------------------------------METHODS-----------------------------------------------------------------
         #region Execute
-        static public void Execute()
+        public void Execute()
         {
             //1] Testing Please be familiar with the task data members and thier format 
             #region TestingTask
@@ -22,20 +29,54 @@ namespace Task_Tracker
             Console.WriteLine("\n");
             Console.WriteLine("this is the task with default values only the title was inputted by the user");
             Task task2 = new Task("Complete project");
-            task2.Print();
+            //task2.Print();
 
 
             Console.WriteLine("\n");
             List<string> tags = new List<string> { "tag1", "tag2", "tag3" };
             Task task1 = new Task("Complete project", "Complete the project by the end of the week",
            TimeSpan.FromDays(7), new DateTime(2023, 12, 31, 23, 59, 59), Priority.High, tags, Status.NotCompleted);
-            task1.Print();
+            //task1.Print();
 
             Console.WriteLine("\n this is the duplicated Task:");
             Task t3 = DublicateTask(task1);
-            t3.Print();
+            //t3.Print();
             #endregion
 
+
+            ListOfTasks.Add(task1);
+            ListOfTasks.Add(task2);
+            ListOfTasks.Add(t3);
+
+            var filtered = Filter(UtilFilterBy.Priority, Priority.Medium);
+            filtered.ForEach(t => Console.WriteLine(t.Title));
+
+
+            var input = (UtilChoice)Convert.ToInt32(Console.ReadLine());
+
+            while (input != UtilChoice.Exit)
+            {
+                switch (input)
+                {
+                    case UtilChoice.Add:
+                        Console.WriteLine("Add");
+                        break;
+                    case UtilChoice.Edit:
+                        Console.WriteLine("Edit");
+                        break;
+                    case UtilChoice.Sort:
+                        Console.WriteLine("Sort");
+                        break;
+                    case UtilChoice.Filter:
+                        Console.WriteLine("Filter");
+                        break;
+                    default:
+                        Console.WriteLine("Error");
+                        break;
+                }
+
+                input = (UtilChoice)Convert.ToInt32(Console.ReadLine());
+            }
 
 
             /*
@@ -80,6 +121,42 @@ namespace Task_Tracker
 
         //-----------------------------------------------Task Tracking 3.4 Section related functions------------------------------
 
+        private enum UtilFilterBy
+        {
+            Priority,
+            Deadline
+        }
+
+        private List<Task> Filter(UtilFilterBy filterBy, object criteria)
+        {
+            var filteredTasks = new List<Task>();
+
+            try
+            {
+                switch (filterBy)
+                {
+                    case UtilFilterBy.Priority:
+                        filteredTasks.AddRange(ListOfTasks.FindAll(t => t.Priority == (Priority)criteria));
+                        break;
+                    case UtilFilterBy.Deadline:
+                        filteredTasks.AddRange(ListOfTasks.FindAll(t => t.Deadline == (DateTime)criteria));
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(filterBy), filterBy, null);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException("Criteria type does not match filter type", nameof(criteria), e);
+            }
+
+            return filteredTasks;
+        }
+
+        private List<Task> Sort()
+        {
+            return null;
+        }
 
         //-----------------------------------------------Advanced Features 3.5 Section related functions--------------------------
 
