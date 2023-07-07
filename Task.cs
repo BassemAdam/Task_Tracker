@@ -19,15 +19,63 @@ namespace Task_Tracker
         static int NumberOfTasks;
         static int UtilCounter;
 
-        private int uniqueIdentifier { get; set; }
-        private string title { get; set; } //mandatory
-        private string description { get; set; }
-        private TimeSpan duration { get; set; }
-        private DateTime deadline { get; set; } //private DateTime deadline = new DateTime(2023, 12, 31, 23, 59, 59);
-        private Priority priority { get; set; }
-        private List<string> tags { get; set; }
-        private Status status { get; set; }
+        private int uniqueIdentifier;
+        private string title; //mandatory
+        private string description;
+        private TimeSpan duration;
+        private DateTime deadline;  //private DateTime deadline = new DateTime(2023, 12, 31, 23, 59, 59);
+        private Priority priority;
+        private List<string> tags;
+        private Status status;
         #endregion
+
+        public int UniqueIdentifier
+        {
+            get => uniqueIdentifier;
+            set => uniqueIdentifier = value;
+        }
+
+        public string Title
+        {
+            get => title;
+            set => title = value;
+        }
+
+        public string Description
+        {
+            get => description;
+            set => description = value;
+        }
+
+        public TimeSpan Duration
+        {
+            get => duration;
+            set => duration = value;
+        }
+
+        public DateTime Deadline
+        {
+            get => deadline;
+            set => deadline = value;
+        }
+
+        public Priority Priority
+        {
+            get => priority;
+            set => priority = value;
+        }
+
+        public List<string> Tags
+        {
+            get => tags;
+            set => tags = value;
+        }
+
+        public Status Status
+        {
+            get => status;
+            set => status = value;
+        }
 
         //-----------------------------------------------Methods--------------------------------------------------------------
 
@@ -75,12 +123,13 @@ namespace Task_Tracker
             Console.WriteLine("Duration: " + duration);
             Console.WriteLine("Deadline: " + deadline);
             Console.WriteLine("Priority: " + priority);
-            Console.WriteLine("Tags: " );
-            if (tags != null) { 
-            foreach (var tag in tags)
+            Console.WriteLine("Tags: ");
+            if (tags != null)
             {
-                Console.WriteLine(tag);
-            }
+                foreach (var tag in tags)
+                {
+                    Console.WriteLine(tag);
+                }
             }
             else
             {
@@ -88,7 +137,7 @@ namespace Task_Tracker
             }
             Console.WriteLine("Status: " + status);
         }
-         #endregion
+        #endregion
 
     }
 }
