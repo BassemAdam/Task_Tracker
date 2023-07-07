@@ -43,7 +43,7 @@ namespace Task_Tracker
             // t3.Print();
             // #endregion
 
-            var input = (UtilChoice)(Convert.ToInt32(Console.ReadLine()) + 1);
+            var input = (UtilChoice)Convert.ToInt32(Console.ReadLine());
 
             while (input != UtilChoice.Exit)
             {
@@ -66,7 +66,7 @@ namespace Task_Tracker
                         break;
                 }
 
-                input = (UtilChoice)(Convert.ToInt32(Console.ReadLine()) + 1);
+                input = (UtilChoice)Convert.ToInt32(Console.ReadLine());
             }
 
             /*
