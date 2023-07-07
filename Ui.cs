@@ -10,8 +10,8 @@ namespace Task_Tracker
     {
 
         //Ziad ElGendy
+        //Mazen Weal
         //Yousef zahran v2
-        //Mazen Wael
         //Bassem Adam
     }
 }
