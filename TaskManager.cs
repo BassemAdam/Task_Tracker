@@ -23,35 +23,30 @@ namespace Task_Tracker
         #region Execute
         public void Execute()
         {
-            //1] Testing Please be familiar with the task data members and thier format 
-            #region TestingTask
 
-            Console.WriteLine("\n");
-            Console.WriteLine("this is the task with default values only the title was inputted by the user");
-            Task task2 = new Task("Complete project");
-            //task2.Print();
+            //* Adding some example tasks to list of tasks
+            ListOfTasks.Add(new Task(
+                "Task 1",
+                "Task 1 Description",
+                new TimeSpan(5, 45, 15),
+                DateTime.Now,
+                Priority.High,
+                new List<string> { "Task 1", "3H" },
+                Status.NotCompleted));
 
+            ListOfTasks.Add(new Task(
+                "Task 2",
+                "Task 2 Description",
+                new TimeSpan(4, 30, 0),
+                DateTime.Now,
+                Priority.Medium,
+                new List<string> { "Task 3", "4M" },
+                Status.NotCompleted));
 
-            Console.WriteLine("\n");
-            List<string> tags = new List<string> { "tag1", "tag2", "tag3" };
-            Task task1 = new Task("Complete project", "Complete the project by the end of the week",
-           TimeSpan.FromDays(7), new DateTime(2023, 12, 31, 23, 59, 59), Priority.High, tags, Status.NotCompleted);
-            //task1.Print();
-
-            Console.WriteLine("\n this is the duplicated Task:");
-            Task t3 = DublicateTask(task1);
-            //t3.Print();
-            #endregion
-
-
-            ListOfTasks.Add(task1);
-            ListOfTasks.Add(task2);
-            ListOfTasks.Add(t3);
-
-            var filtered = Filter(UtilFilterBy.Priority, Priority.Medium);
-            filtered.ForEach(t => Console.WriteLine(t.Title));
+            ListOfTasks.Add(DuplicateTask(ListOfTasks[0]));
 
 
+            //* Input
             var input = (UtilChoice)Convert.ToInt32(Console.ReadLine());
 
             while (input != UtilChoice.Exit)
@@ -66,12 +61,16 @@ namespace Task_Tracker
                         break;
                     case UtilChoice.Sort:
                         Console.WriteLine("Sort");
+                        var sorted = Sort(UtilSortBy.Duration, UtilSortOrder.Ascending);
+                        sorted.ForEach(t => Console.WriteLine(t.Title));
                         break;
                     case UtilChoice.Filter:
                         Console.WriteLine("Filter");
+                        var filtered = Filter(UtilFilterBy.Priority, Priority.Medium);
+                        filtered.ForEach(t => Console.WriteLine(t.Title));
                         break;
                     default:
-                        Console.WriteLine("Error");
+                        Console.WriteLine("Invalid input");
                         break;
                 }
 
@@ -108,7 +107,7 @@ namespace Task_Tracker
 
         //-----------------------------------------------Task Creation Section 3.2 related functions------------------------------
         #region DuplicateTask
-        static private Task DublicateTask(Task task)
+        static private Task DuplicateTask(Task task)
         {
             Task task1 = new Task(task);
             // ListOfTasks.Add(task);
@@ -153,9 +152,48 @@ namespace Task_Tracker
             return filteredTasks;
         }
 
-        private List<Task> Sort()
+        private enum UtilSortBy
         {
-            return null;
+            Priority,
+            Deadline,
+            Duration
+        }
+
+        private enum UtilSortOrder
+        {
+            Ascending,
+            Descending
+        }
+
+        private List<Task> Sort(UtilSortBy sortBy, UtilSortOrder sortOrder)
+        {
+            var sorted = ListOfTasks;
+
+
+            try
+            {
+                switch (sortBy)
+                {
+                    case UtilSortBy.Priority:
+                        sorted.Sort((t1, t2) => sortOrder == UtilSortOrder.Ascending ? t1.Priority.CompareTo(t2.Priority) : t2.Priority.CompareTo(t1.Priority));
+                        break;
+                    case UtilSortBy.Deadline:
+                        sorted.Sort((t1, t2) => sortOrder == UtilSortOrder.Ascending ? t1.Deadline.CompareTo(t2.Deadline) : t2.Deadline.CompareTo(t1.Deadline));
+                        break;
+                    case UtilSortBy.Duration:
+                        sorted.Sort((t1, t2) => sortOrder == UtilSortOrder.Ascending ? t1.Duration.CompareTo(t2.Duration) : t2.Duration.CompareTo(t1.Duration));
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(sortBy), sortBy, null);
+
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("An error occurred while sorting");
+            }
+
+            return sorted;
         }
 
         //-----------------------------------------------Advanced Features 3.5 Section related functions--------------------------
