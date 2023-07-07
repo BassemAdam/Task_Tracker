@@ -19,14 +19,14 @@ namespace Task_Tracker
         static int NumberOfTasks;
         static int UtilCounter;
 
-        private int uniqueIdentifier;
-        private string title; //mandatory
-        private string description;
-        private TimeSpan duration;
-        private DateTime deadline;  //private DateTime deadline = new DateTime(2023, 12, 31, 23, 59, 59);
-        private Priority priority;
-        private List<string> tags;
-        private Status status;
+        private int uniqueIdentifier { get; set; }
+        private string title { get; set; } //mandatory
+        private string description { get; set; }
+        private TimeSpan duration { get; set; }
+        private DateTime deadline { get; set; } //private DateTime deadline = new DateTime(2023, 12, 31, 23, 59, 59);
+        private Priority priority { get; set; }
+        private List<string> tags { get; set; }
+        private Status status { get; set; }
         #endregion
 
         //-----------------------------------------------Methods--------------------------------------------------------------
