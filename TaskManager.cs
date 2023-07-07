@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,14 +17,27 @@ namespace Task_Tracker
             Edit,
             Sort,
             Filter,
-            Exit
+            Exit,
+            Delete,
+            Update
         }
 
+        enum UtilProperty
+        {
+            Title,
+            Description,
+            Duration,
+            Deadline,
+            Priority,
+            Tags,
+            Status,
+            Exit
+        }   
         //-----------------------------------------------METHODS-----------------------------------------------------------------
         #region Execute
         public void Execute()
         {
-
+            
             //* Adding some example tasks to list of tasks
             ListOfTasks.Add(new Task(
                 "Task 1",
@@ -33,6 +47,9 @@ namespace Task_Tracker
                 Priority.High,
                 new List<string> { "Task 1", "3H" },
                 Status.NotCompleted));
+
+            //teting toString Method 
+            Console.WriteLine("Testing toString Method \n"+ListOfTasks[0]);
 
             ListOfTasks.Add(new Task(
                 "Task 2",
@@ -68,6 +85,14 @@ namespace Task_Tracker
                         Console.WriteLine("Filter");
                         var filtered = Filter(UtilFilterBy.Priority, Priority.Medium);
                         filtered.ForEach(t => Console.WriteLine(t.Title));
+                        break;
+                    case UtilChoice.Delete:
+                        Console.WriteLine("Delete");
+                        break;
+                    case UtilChoice.Update:
+                        Console.WriteLine("Update");
+                        UpdateTask(ListOfTasks[0]);
+                        Console.WriteLine("Printing Updated Task \n" + ListOfTasks[0]);
                         break;
                     default:
                         Console.WriteLine("Invalid input");
@@ -116,10 +141,91 @@ namespace Task_Tracker
         #endregion
 
         //-----------------------------------------------Task Updating 3.3 Section related functions------------------------------
+        #region UpdateTask
+        private void UpdateTask(Task task)
+        {
+            Console.WriteLine("what exactly you want to edit ?");
+            Console.WriteLine("1. Title");
+            Console.WriteLine("2. Description");
+            Console.WriteLine("3. Duration");
+            Console.WriteLine("4. Deadline");
+            Console.WriteLine("5. Priority");
+            Console.WriteLine("6. Tags");
+            Console.WriteLine("7. Status");
+            Console.WriteLine("8. Exit");
+
+            var input = (UtilProperty)Convert.ToInt32(Console.ReadLine()) -1;
+            while (input != UtilProperty.Exit)
+            {
+                switch (input)
+                {
+                    case UtilProperty.Title:
+                        Console.WriteLine("Enter the new title");
+                        task.Title = Console.ReadLine();
+                        break;
+                    case UtilProperty.Description:
+                        Console.WriteLine("Enter the new description");
+                        task.Description = Console.ReadLine();
+                        break;
+                    case UtilProperty.Duration:
+                        Console.WriteLine("Enter the new duration");
+                        task.Duration = TimeSpan.Parse(Console.ReadLine());
+                        break;
+                    case UtilProperty.Deadline:
+                        Console.WriteLine("Enter the new deadline");
+                        task.Deadline = DateTime.Parse(Console.ReadLine());
+                        break;
+                    case UtilProperty.Priority:
+                        Console.WriteLine("Enter the new priority");
+                        task.Priority = (Priority)Convert.ToInt32(Console.ReadLine());
+
+                        break;
+
+                    case UtilProperty.Tags:
+                        Console.WriteLine("Which Tag do u want to change");
+                        string tagToBeReplaced = Console.ReadLine();
+                        int index = task.Tags.IndexOf(tagToBeReplaced);
+                        task.Tags.Remove(tagToBeReplaced);
+                        Console.WriteLine("whats the new tag name that you want to replace it ?");
+                        task.Tags.Insert(index, Console.ReadLine());
+                        break;
+                    case UtilProperty.Status:
+                        Console.WriteLine("Enter the new status");
+                        task.Status = (Status)Convert.ToInt32(Console.ReadLine());
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input");
+                        break;
+                }
+
+                input = (UtilProperty)Convert.ToInt32(Console.ReadLine()) -1;
+            }
 
 
+           
+            
+            
+            
+            
+            
+           
+        }
+        #endregion
+
+        #region DeleteTask
+        private void DeleteTask(Task task)
+        {
+            ListOfTasks.Remove(task);
+        }
+        #endregion
+
+        #region  DesignateTask
+        //optional OPTIONAL: The user should have the option to designate a task as ‘Not Pursuing’,
+        //indicating that it is not complete, but not should not remain open. --------->>>>>>>>>>>>>>>>>>> we will just change the status by the setter 
+        #endregion
         //-----------------------------------------------Task Tracking 3.4 Section related functions------------------------------
 
+      
         private enum UtilFilterBy
         {
             Priority,

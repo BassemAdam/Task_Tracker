@@ -119,6 +119,21 @@ namespace Task_Tracker
         }
         #endregion
 
+        #region ToStringMethod
+        public override string ToString()
+        {
+            return "Task ID: " + uniqueIdentifier + "\n" +
+                "Title: " + title + "\n" +
+                "Description: " + description + "\n" +
+                "Duration: " + duration + "\n" +
+                "Deadline: " + deadline + "\n" +
+                "Priority: " + priority + "\n" +
+                "Tags: " + string.Join(' ',tags) + "\n" +
+                "Status: " + status + "\n";
+            //tags[0] will be handled later by linq
+        }   
+        #endregion
+
         #region Print
         public void Print()
         {
