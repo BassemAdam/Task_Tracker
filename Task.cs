@@ -8,7 +8,7 @@ namespace Task_Tracker
 {
 
     #region enums
-    enum Status { NotCompleted, NotPursuing, Completed}
+    enum Status { NotCompleted, NotPursuing, Completed }
     enum Priority { Low, Medium, High }
     #endregion
 
@@ -31,20 +31,20 @@ namespace Task_Tracker
 
         //-----------------------------------------------Methods--------------------------------------------------------------
         #region Constructor
-        public Task(string title, string description = "empty", TimeSpan duration = default,
-            DateTime deadline = default, Priority priority = Priority.Medium, List<string> tags = null, Status status = Status.NotCompleted)
+        public Task(string _title, string _description = "empty", TimeSpan _duration = default,
+            DateTime _deadline = default, Priority _priority = Priority.Medium, List<string> _tags = null, Status _status = Status.NotCompleted)
 
         {
             NumberOfTasks++;
             UtilCounter++;
-            this.uniqueIdentifier = UtilCounter;
-            this.title = title;
-            this.description = description;
-            this.duration = duration;
-            this.deadline = deadline;
-            this.priority = priority;
-            this.tags = tags;
-            this.status = status;
+            uniqueIdentifier = UtilCounter;
+            title = _title;
+            description = _description;
+            duration = _duration;
+            deadline = _deadline;
+            priority = _priority;
+            tags = _tags;
+            status = _status;
         }
         #endregion
 
@@ -54,14 +54,14 @@ namespace Task_Tracker
         {
             NumberOfTasks++;
             UtilCounter++;
-            this.uniqueIdentifier = UtilCounter;
-            this.title = task.title;
-            this.description = task.description;
-            this.duration = task.duration;
-            this.deadline = task.deadline;
-            this.priority = task.priority;
-            this.tags = task.tags;
-            this.status = task.status;
+            uniqueIdentifier = UtilCounter;
+            title = task.title;
+            description = task.description;
+            duration = task.duration;
+            deadline = task.deadline;
+            priority = task.priority;
+            tags = task.tags;
+            status = task.status;
         }
         #endregion
 
@@ -74,12 +74,13 @@ namespace Task_Tracker
             Console.WriteLine("Duration: " + duration);
             Console.WriteLine("Deadline: " + deadline);
             Console.WriteLine("Priority: " + priority);
-            Console.WriteLine("Tags: " );
-            if (tags != null) { 
-            foreach (var tag in tags)
+            Console.WriteLine("Tags: ");
+            if (tags != null)
             {
-                Console.WriteLine(tag);
-            }
+                foreach (var tag in tags)
+                {
+                    Console.WriteLine(tag);
+                }
             }
             else
             {
@@ -87,7 +88,7 @@ namespace Task_Tracker
             }
             Console.WriteLine("Status: " + status);
         }
-         #endregion
+        #endregion
 
     }
 }
