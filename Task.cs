@@ -29,6 +29,54 @@ namespace Task_Tracker
         private Status status;
         #endregion
 
+        public int UniqueIdentifier
+        {
+            get => uniqueIdentifier;
+            set => uniqueIdentifier = value;
+        }
+
+        public string Title
+        {
+            get => title;
+            set => title = value;
+        }
+
+        public string Description
+        {
+            get => description;
+            set => description = value;
+        }
+
+        public TimeSpan Duration
+        {
+            get => duration;
+            set => duration = value;
+        }
+
+        public DateTime Deadline
+        {
+            get => deadline;
+            set => deadline = value;
+        }
+
+        public Priority Priority
+        {
+            get => priority;
+            set => priority = value;
+        }
+
+        public List<string> Tags
+        {
+            get => tags;
+            set => tags = value;
+        }
+
+        public Status Status
+        {
+            get => status;
+            set => status = value;
+        }
+
         //-----------------------------------------------Methods--------------------------------------------------------------
 
         #region Constructor
