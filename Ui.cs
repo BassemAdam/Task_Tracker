@@ -9,7 +9,7 @@ namespace Task_Tracker
 {
     internal class Ui
     {
-        public static void displayTaskMenu(List<Task> listOfTasks)
+        public static string displayTaskMenu(List<Task> listOfTasks)
         {
             var table = new Table();
             table.Border(TableBorder.Rounded);
@@ -24,10 +24,27 @@ namespace Task_Tracker
             foreach (var task in listOfTasks)
             {
                 string tags = string.Join(",", task.Tags);
-                table.AddRow(task.Title, task.Description, task.Duration.ToString() ,task.Deadline.ToString(), task.Priority.ToString(), tags, task.Status.ToString());
+                table.AddRow(task.Title, task.Description, task.Duration.ToString(), task.Deadline.ToString(), task.Priority.ToString(), tags, task.Status.ToString());
             }
 
             AnsiConsole.Write(table);
+
+            var select = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                .Title("What would you like to do?")
+                .PageSize(10)
+                .AddChoices(new[]
+                {
+                    "Add",
+                    "Edit",
+                    "Sort",
+                    "Filter",
+                    "Delete",
+                    "Update",
+                    "Exit"
+                }));
+            return select;
         }
+
     }
 }

@@ -63,8 +63,7 @@ namespace Task_Tracker
 
             ListOfTasks.Add(DuplicateTask(ListOfTasks[0]));
 
-            Ui.displayTaskMenu(ListOfTasks);
-            var input = (UtilChoice)Convert.ToInt32(Console.ReadLine());
+            var input = (UtilChoice)Convert.ToInt32(Ui.displayTaskMenu(ListOfTasks));
 
             while (input != UtilChoice.Exit)
             {
