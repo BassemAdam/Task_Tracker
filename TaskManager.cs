@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Task_Tracker.Exceptions;
 
 namespace Task_Tracker
 {
@@ -32,12 +33,12 @@ namespace Task_Tracker
             Tags,
             Status,
             Exit
-        }   
+        }
         //-----------------------------------------------METHODS-----------------------------------------------------------------
         #region Execute
         public void Execute()
         {
-            
+
             //* Adding some example tasks to list of tasks
             ListOfTasks.Add(new Task(
                 "Task 1",
@@ -49,7 +50,7 @@ namespace Task_Tracker
                 Status.NotCompleted));
 
             //teting toString Method 
-            Console.WriteLine("Testing toString Method \n"+ListOfTasks[0]);
+            Console.WriteLine("Testing toString Method \n" + ListOfTasks[0]);
 
             ListOfTasks.Add(new Task(
                 "Task 2",
@@ -78,13 +79,27 @@ namespace Task_Tracker
                         break;
                     case UtilChoice.Sort:
                         Console.WriteLine("Sort");
-                        var sorted = Sort(UtilSortBy.Duration, UtilSortOrder.Ascending);
-                        sorted.ForEach(t => Console.WriteLine(t.Title));
+                        try
+                        {
+                            var sorted = Sort(UtilSortBy.Duration, UtilSortOrder.Ascending);
+                            sorted.ForEach(t => Console.WriteLine(t.Title));
+                        }
+                        catch (UtilSortException e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
                         break;
                     case UtilChoice.Filter:
                         Console.WriteLine("Filter");
-                        var filtered = Filter(UtilFilterBy.Priority, Priority.Medium);
-                        filtered.ForEach(t => Console.WriteLine(t.Title));
+                        try
+                        {
+                            var filtered = Filter(FilterType.Deadline, Priority.Medium);
+                            filtered.ForEach(t => Console.WriteLine(t.Title));
+                        }
+                        catch (Exception e) when (e is UtilFilterException || e is UtilFilterCriteriaException)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
                         break;
                     case UtilChoice.Delete:
                         Console.WriteLine("Delete");
@@ -154,7 +169,7 @@ namespace Task_Tracker
             Console.WriteLine("7. Status");
             Console.WriteLine("8. Exit");
 
-            var input = (UtilProperty)Convert.ToInt32(Console.ReadLine()) -1;
+            var input = (UtilProperty)Convert.ToInt32(Console.ReadLine()) - 1;
             while (input != UtilProperty.Exit)
             {
                 switch (input)
@@ -198,17 +213,17 @@ namespace Task_Tracker
                         break;
                 }
 
-                input = (UtilProperty)Convert.ToInt32(Console.ReadLine()) -1;
+                input = (UtilProperty)Convert.ToInt32(Console.ReadLine()) - 1;
             }
 
 
-           
-            
-            
-            
-            
-            
-           
+
+
+
+
+
+
+
         }
         #endregion
 
@@ -225,35 +240,53 @@ namespace Task_Tracker
         #endregion
         //-----------------------------------------------Task Tracking 3.4 Section related functions------------------------------
 
-      
-        private enum UtilFilterBy
+        private enum FilterType
         {
             Priority,
             Deadline
         }
 
-        private List<Task> Filter(UtilFilterBy filterBy, object criteria)
+        private List<Task> Filter(FilterType filterType, object criteria)
         {
             var filteredTasks = new List<Task>();
 
             try
             {
-                switch (filterBy)
+                switch (filterType)
                 {
-                    case UtilFilterBy.Priority:
+                    case FilterType.Priority:
+                        if (criteria is not Priority)
+                        {
+                            throw new UtilFilterCriteriaException($"Criteria type {criteria?.GetType()} does not match filter type {filterType}");
+                        }
+
                         filteredTasks.AddRange(ListOfTasks.FindAll(t => t.Priority == (Priority)criteria));
                         break;
-                    case UtilFilterBy.Deadline:
+
+                    case FilterType.Deadline:
+                        if (criteria is not DateTime)
+                        {
+                            throw new UtilFilterCriteriaException($"Criteria type {criteria?.GetType()} does not match filter type {filterType}");
+                        }
+
                         filteredTasks.AddRange(ListOfTasks.FindAll(t => t.Deadline == (DateTime)criteria));
                         break;
+
                     default:
-                        throw new ArgumentOutOfRangeException(nameof(filterBy), filterBy, null);
+                        throw new UtilFilterCriteriaException($"Unrecognized filter type: {filterType}");
                 }
+
             }
             catch (Exception e)
             {
-                throw new ArgumentException("Criteria type does not match filter type", nameof(criteria), e);
+                if (e is UtilFilterException or UtilFilterCriteriaException)
+                {
+                    throw;
+                }
+
+                throw new UtilFilterException("An unknown error occurred while filtering", e);
             }
+
 
             return filteredTasks;
         }
@@ -296,7 +329,7 @@ namespace Task_Tracker
             }
             catch (Exception e)
             {
-                throw new Exception("An error occurred while sorting");
+                throw new UtilSortException("An unknown error occurred while sorting", e);
             }
 
             return sorted;
