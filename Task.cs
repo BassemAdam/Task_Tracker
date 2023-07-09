@@ -23,7 +23,7 @@ namespace Task_Tracker
         private int uniqueIdentifier;
         private string title; //mandatory
         private string description;
-        private DateTime startdate;
+        private DateTime startDate;
         private DateTime deadline;  //private DateTime deadline = new DateTime(2023, 12, 31, 23, 59, 59);
         private TimeSpan duration;
         private Priority priority;
@@ -83,15 +83,15 @@ namespace Task_Tracker
             set => status = value;
         }
 
-        public DateTime Startdate {
-            get => startdate;
-            set => startdate =  value; 
+        public DateTime StartDate {
+            get => startDate;
+            set => startDate =  value; 
         }
 
         #endregion
 
         #region Constructor
-        public Task(string _title, string _description = "empty", TimeSpan _duration = default,
+        public Task(string _title, string _description = "empty",DateTime _startdate = default,
             DateTime _deadline = default, Priority _priority = Priority.Medium, List<string> _tags = null, Status _status = Status.NotCompleted)
 
         {
@@ -100,8 +100,9 @@ namespace Task_Tracker
             uniqueIdentifier = UtilCounter;
             title = _title;
             description = _description;
-            duration = _duration;
+            startDate = _startdate;
             deadline = _deadline;
+            duration = _deadline - _startdate;
             priority = _priority;
             tags = _tags;
             status = _status;
@@ -117,8 +118,9 @@ namespace Task_Tracker
             uniqueIdentifier = UtilCounter;
             title = task.title;
             description = task.description;
-            duration = task.duration;
+            startDate= task.startDate;
             deadline = task.deadline;
+            duration = task.duration;
             priority = task.priority;
             tags = task.tags;
             status = task.status;
@@ -132,6 +134,7 @@ namespace Task_Tracker
                 "Title: " + title + "\n" +
                 "Description: " + description + "\n" +
                 "Duration: " + duration + "\n" +
+                "Startdate: " + startDate + "\n" +
                 "Deadline: " + deadline + "\n" +
                 "Priority: " + priority + "\n" +
                 "Tags: " + string.Join(' ',tags) + "\n" +
@@ -147,6 +150,7 @@ namespace Task_Tracker
             Console.WriteLine("Title: " + title);
             Console.WriteLine("Description: " + description);
             Console.WriteLine("Duration: " + duration);
+            Console.WriteLine("Startdate: " + startDate);
             Console.WriteLine("Deadline: " + deadline);
             Console.WriteLine("Priority: " + priority);
             Console.WriteLine("Tags: ");
