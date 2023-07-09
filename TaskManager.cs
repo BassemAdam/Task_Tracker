@@ -62,8 +62,8 @@ namespace Task_Tracker
                 Status.NotCompleted));
 
             ListOfTasks.Add(DuplicateTask(ListOfTasks[0]));
-
-            var input = (UtilChoice)Convert.ToInt32(Ui.displayTaskMenu(ListOfTasks));
+           
+            UtilChoice input = Enum.Parse<UtilChoice>(Ui.displayTaskMenu(ListOfTasks));
 
             while (input != UtilChoice.Exit)
             {
@@ -71,6 +71,7 @@ namespace Task_Tracker
                 {
                     case UtilChoice.Add:
                         Console.WriteLine("Add");
+                        ListOfTasks.Add(Ui.displayAddMenu());
                         break;
                     case UtilChoice.Edit:
                         Console.WriteLine("Edit");
@@ -112,7 +113,8 @@ namespace Task_Tracker
                         break;
                 }
 
-                input = (UtilChoice)Convert.ToInt32(Console.ReadLine());
+                Console.Clear();
+                input = Enum.Parse<UtilChoice>(Ui.displayTaskMenu(ListOfTasks));
             }
 
 
