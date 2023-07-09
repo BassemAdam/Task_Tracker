@@ -62,7 +62,7 @@ namespace Task_Tracker
 
             ListOfTasks.Add(DuplicateTask(ListOfTasks[0]));
            
-            UtilChoice input = Enum.Parse<UtilChoice>(Ui.displayTaskMenu(ListOfTasks));
+            UtilChoice input = Enum.Parse<UtilChoice>(Ui.DisplayTaskMenu(ListOfTasks));
 
             while (input != UtilChoice.Exit)
             {
@@ -70,16 +70,16 @@ namespace Task_Tracker
                 {
                     case UtilChoice.Add:
                         Console.WriteLine("Add");
-                        ListOfTasks.Add(Ui.displayAddMenu());
+                        ListOfTasks.Add(Ui.DisplayAddMenu());
                         break;
 
                     case UtilChoice.Update:
                         Console.WriteLine("Update");
-                        Ui.displayUpdateMenu(ListOfTasks);
+                        Ui.DisplayUpdateMenu(ListOfTasks);
                         break;
 
                     case UtilChoice.Delete:
-                        Ui.displayDeleteMenu(ListOfTasks);
+                        Ui.DisplayDeleteMenu(ListOfTasks);
                         break;
 
                     //TODO: Make Sort and Filter not permanent
@@ -87,7 +87,7 @@ namespace Task_Tracker
                         Console.WriteLine("Sort");
                         try
                         {
-                            (string,string) sort = Ui.displaySortMenu();
+                            (string,string) sort = Ui.DisplaySortMenu();
                             var sorted = Sort(sort.Item1,sort.Item2);
                             ListOfTasks = sorted;
                         }
@@ -116,7 +116,7 @@ namespace Task_Tracker
                 }
 
                 Console.Clear();
-                input = Enum.Parse<UtilChoice>(Ui.displayTaskMenu(ListOfTasks));
+                input = Enum.Parse<UtilChoice>(Ui.DisplayTaskMenu(ListOfTasks));
             }
 
 

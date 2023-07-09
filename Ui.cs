@@ -63,7 +63,8 @@ namespace Task_Tracker
 
             var title = AnsiConsole.Prompt(
                 new TextPrompt<string>("[blue]Title?[/]")
-                .Validate(title => title.Length > 0 ? ValidationResult.Success() : ValidationResult.Error("Title cannot be empty")));
+                .Validate(title => title.Length > 0 ? ValidationResult.Success() : ValidationResult.Error("Title cannot be empty")
+                )) ;
             
             var description = AnsiConsole.Prompt(
                 new TextPrompt<string>("[grey][[Optional]] [/][blue]Description?[/]")
@@ -133,7 +134,7 @@ namespace Task_Tracker
 
             if (AnsiConsole.Confirm("Add tags?", false))
             {
-                tag = AnsiConsole.Ask<string>(@"[blue]Enter Tag[/] [grey][[Enter \ to exit]][/]");
+                tag = AnsiConsole.Ask<string>(@"[blue]Enter Tags[/] [grey][[Enter \ to exit]][/]");
 
                 while (tag != @"\")
                 {
@@ -165,7 +166,9 @@ namespace Task_Tracker
                 .Title("Which task would you like to update?")
                 .AddChoices(titles));
 
-            var selectedTask = listOfTasks.Find(x => x.Title == title);
+            int titleIndex = titles.IndexOf(title);
+
+            var selectedTask = listOfTasks[titleIndex];
 
             //TODO: Fix error where updating task also updates other tasks with same 
             Console.Clear();
@@ -343,8 +346,8 @@ namespace Task_Tracker
                                             .AddChoices(new[]
                                             {
                                                 "Completed",
-                                                "Not Completed",
-                                                "Not Pursuing",
+                                                "NotCompleted",
+                                                "NotPursuing",
                                             }));
 
                         selectedTask.Status = (Status)Enum.Parse(typeof(Status), StatusString);
