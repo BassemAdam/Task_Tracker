@@ -82,12 +82,14 @@ namespace Task_Tracker
                         Ui.displayDeleteMenu(ListOfTasks);
                         break;
 
+                    //TODO: Make Sort and Filter not permanent
                     case UtilChoice.Sort:
                         Console.WriteLine("Sort");
                         try
                         {
-                            var sorted = Sort(UtilSortBy.Duration, UtilSortOrder.Ascending);
-                            sorted.ForEach(t => Console.WriteLine(t.Title));
+                            (string,string) sort = Ui.displaySortMenu();
+                            var sorted = Sort(sort.Item1,sort.Item2);
+                            ListOfTasks = sorted;
                         }
                         catch (UtilSortException e)
                         {
@@ -156,7 +158,7 @@ namespace Task_Tracker
         #endregion
 
         //-----------------------------------------------Task Updating 3.3 Section related functions------------------------------
-        #region UpdateTask
+        /*        #region UpdateTask
         private void UpdateTask(Task task)
         {
             Console.WriteLine("what exactly you want to edit ?");
@@ -232,7 +234,7 @@ namespace Task_Tracker
         {
             ListOfTasks.Remove(task);
         }
-        #endregion
+        #endregion*/
 
         #region  DesignateTask
         //optional OPTIONAL: The user should have the option to designate a task as ‘Not Pursuing’,
@@ -304,10 +306,12 @@ namespace Task_Tracker
             Descending
         }
 
-        private List<Task> Sort(UtilSortBy sortBy, UtilSortOrder sortOrder)
+        private List<Task> Sort(string _sortBy, string _sortOrder)
         {
             var sorted = ListOfTasks;
-
+            
+            UtilSortBy sortBy = (UtilSortBy)Enum.Parse(typeof(UtilSortBy),_sortBy);
+            UtilSortOrder sortOrder = (UtilSortOrder)Enum.Parse(typeof(UtilSortOrder), _sortOrder);
 
             try
             {

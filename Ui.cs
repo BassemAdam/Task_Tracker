@@ -396,5 +396,31 @@ namespace Task_Tracker
 
             listOfTasks.Remove(selectedTask);
         }
+
+        public static (string,string) displaySortMenu()
+        {
+            Console.Clear();
+            var panel = new Panel("[pink1]Sort tasks[/]");
+            AnsiConsole.Write(panel);
+
+            var sortBy = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("[blue]Sort by:[/]")
+                    .AddChoices(new[] {
+                        "Priority",
+                        "Deadline",
+                        "Duration"
+                    }));
+
+            var sortOrder = AnsiConsole.Prompt(
+                     new SelectionPrompt<string>()
+                    .Title("[blue]Sort order:[/]")
+                    .AddChoices(new[] {
+                        "Ascending",
+                        "Descending"
+                    }));    
+
+            return (sortBy, sortOrder);
+        }
     }
 }
