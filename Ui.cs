@@ -151,6 +151,8 @@ namespace Task_Tracker
         {
             Console.Clear();
             var panel1 = new Panel("[pink1]Update Task[/]");
+            AnsiConsole.Write(panel1);
+
 
             List<string> titles = new List<string>();
             foreach (var task in listOfTasks)
@@ -165,7 +167,10 @@ namespace Task_Tracker
 
             var selectedTask = listOfTasks.Find(x => x.Title == title);
 
+            //TODO: Fix error where updating task also updates other tasks with same 
+            Console.Clear();
             var panel2 = new Panel($"[pink1]Update Task: {selectedTask.Title}[/]");
+            AnsiConsole.Write(panel2);
 
             var property = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
@@ -362,6 +367,34 @@ namespace Task_Tracker
                             "Status",
                             "Exit"));
             }
+        }
+
+        public static void displayDeleteMenu(List<Task> listOfTasks)
+        {
+            Console.Clear();
+            var panel = new Panel("[pink1]Delete Task[/]");
+            AnsiConsole.Write(panel);
+
+            List<string> titles = new List<string>();
+            foreach (var task in listOfTasks)
+            {
+                titles.Add(task.Title);
+            }
+
+            if(titles.Count == 0)
+            {
+                Console.WriteLine("There are no tasks to delete");
+                return;
+            }
+
+            var title = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                .Title("Which task would you like to update?")
+                .AddChoices(titles));
+
+            var selectedTask = listOfTasks.Find(x => x.Title == title);
+
+            listOfTasks.Remove(selectedTask);
         }
     }
 }

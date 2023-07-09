@@ -79,7 +79,7 @@ namespace Task_Tracker
                         break;
 
                     case UtilChoice.Delete:
-                        Console.WriteLine("Delete");
+                        Ui.displayDeleteMenu(ListOfTasks);
                         break;
 
                     case UtilChoice.Sort:
