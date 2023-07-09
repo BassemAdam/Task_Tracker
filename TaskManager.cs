@@ -27,7 +27,8 @@ namespace Task_Tracker
         {
             Title,
             Description,
-            Duration,
+            //Duration,
+            StartDate,
             Deadline,
             Priority,
             Tags,
@@ -43,8 +44,8 @@ namespace Task_Tracker
             ListOfTasks.Add(new Task(
                 "Task 1",
                 "Task 1 Description",
-                new TimeSpan(5, 45, 15),
                 DateTime.Now,
+                new DateTime(2023,7,10,11,59,59),
                 Priority.High,
                 new List<string> { "Task 1", "3H" },
                 Status.NotCompleted));
@@ -55,8 +56,8 @@ namespace Task_Tracker
             ListOfTasks.Add(new Task(
                 "Task 2",
                 "Task 2 Description",
-                new TimeSpan(4, 30, 0),
                 DateTime.Now,
+                new DateTime(2023,7,12,8,59,59),
                 Priority.Medium,
                 new List<string> { "Task 3", "4M" },
                 Status.NotCompleted));
@@ -162,7 +163,8 @@ namespace Task_Tracker
             Console.WriteLine("what exactly you want to edit ?");
             Console.WriteLine("1. Title");
             Console.WriteLine("2. Description");
-            Console.WriteLine("3. Duration");
+            //Console.WriteLine("3. Duration");
+            Console.WriteLine("3. StartDate");
             Console.WriteLine("4. Deadline");
             Console.WriteLine("5. Priority");
             Console.WriteLine("6. Tags");
@@ -182,9 +184,9 @@ namespace Task_Tracker
                         Console.WriteLine("Enter the new description");
                         task.Description = Console.ReadLine();
                         break;
-                    case UtilProperty.Duration:
-                        Console.WriteLine("Enter the new duration");
-                        task.Duration = TimeSpan.Parse(Console.ReadLine());
+                    case UtilProperty.StartDate:
+                        Console.WriteLine("Enter the new startDate");
+                        task.StartDate = DateTime.Parse(Console.ReadLine());
                         break;
                     case UtilProperty.Deadline:
                         Console.WriteLine("Enter the new deadline");
