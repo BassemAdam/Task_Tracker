@@ -422,5 +422,25 @@ namespace Task_Tracker
 
             return (sortBy, sortOrder);
         }
+
+        public static (string,string) displayFilterMenu()
+        {
+            Console.Clear();
+            var panel = new Panel("[pink1]Filter tasks[/]");
+            AnsiConsole.Write(panel);
+
+            var filterType = AnsiConsole.Prompt(
+                            new SelectionPrompt<string>()
+                            .Title("[blue]Filter by:[/]")
+                            .AddChoices(new[]
+                            {
+                                "Priority",
+                                "Deadline",
+                                }));
+
+            var filterCriteria = AnsiConsole.Ask<string>("[blue]Criteria:[/]");
+
+            return (filterType, filterCriteria);
+        }
     }
 }

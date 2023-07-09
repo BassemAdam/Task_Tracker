@@ -250,6 +250,7 @@ namespace Task_Tracker
 
         private List<Task> Filter(FilterType filterType, object criteria)
         {
+
             var filteredTasks = new List<Task>();
 
             try
