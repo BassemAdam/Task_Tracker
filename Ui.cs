@@ -10,7 +10,7 @@ namespace Task_Tracker
 {
     internal class Ui
     {
-        public static string displayTaskMenu(List<Task> listOfTasks)
+        public static string DisplayTaskMenu(List<Task> listOfTasks)
         {
             var table = new Table();
             table.Border(TableBorder.Rounded);
@@ -55,7 +55,7 @@ namespace Task_Tracker
             return select;
         }
 
-        public static Task displayAddMenu()
+        public static Task DisplayAddMenu()
         {
             Console.Clear();
             var panel = new Panel("[pink1]Add Task[/]");
@@ -147,7 +147,7 @@ namespace Task_Tracker
 
         }
         
-        public static void displayUpdateMenu(List<Task> listOfTasks)
+        public static void DisplayUpdateMenu(List<Task> listOfTasks)
         {
             Console.Clear();
             var panel1 = new Panel("[pink1]Update Task[/]");
@@ -369,7 +369,7 @@ namespace Task_Tracker
             }
         }
 
-        public static void displayDeleteMenu(List<Task> listOfTasks)
+        public static void DisplayDeleteMenu(List<Task> listOfTasks)
         {
             Console.Clear();
             var panel = new Panel("[pink1]Delete Task[/]");
@@ -397,7 +397,7 @@ namespace Task_Tracker
             listOfTasks.Remove(selectedTask);
         }
 
-        public static (string,string) displaySortMenu()
+        public static (string,string) DisplaySortMenu()
         {
             Console.Clear();
             var panel = new Panel("[pink1]Sort tasks[/]");
@@ -423,7 +423,7 @@ namespace Task_Tracker
             return (sortBy, sortOrder);
         }
 
-        public static (string,string) displayFilterMenu()
+        public static (string,string) DisplayFilterMenu()
         {
             Console.Clear();
             var panel = new Panel("[pink1]Filter tasks[/]");
