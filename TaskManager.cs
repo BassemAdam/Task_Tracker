@@ -15,12 +15,11 @@ namespace Task_Tracker
         enum UtilChoice
         {
             Add,
-            Edit,
+            Update,
+            Delete,
             Sort,
             Filter,
-            Exit,
-            Delete,
-            Update
+            Exit,            
         }
 
         enum UtilProperty
@@ -73,9 +72,16 @@ namespace Task_Tracker
                         Console.WriteLine("Add");
                         ListOfTasks.Add(Ui.displayAddMenu());
                         break;
-                    case UtilChoice.Edit:
-                        Console.WriteLine("Edit");
+
+                    case UtilChoice.Update:
+                        Console.WriteLine("Update");
+                        Ui.displayUpdateMenu(ListOfTasks);
                         break;
+
+                    case UtilChoice.Delete:
+                        Console.WriteLine("Delete");
+                        break;
+
                     case UtilChoice.Sort:
                         Console.WriteLine("Sort");
                         try
@@ -88,6 +94,7 @@ namespace Task_Tracker
                             Console.WriteLine(e.Message);
                         }
                         break;
+
                     case UtilChoice.Filter:
                         Console.WriteLine("Filter");
                         try
@@ -100,14 +107,7 @@ namespace Task_Tracker
                             Console.WriteLine(e.Message);
                         }
                         break;
-                    case UtilChoice.Delete:
-                        Console.WriteLine("Delete");
-                        break;
-                    case UtilChoice.Update:
-                        Console.WriteLine("Update");
-                        UpdateTask(ListOfTasks[0]);
-                        Console.WriteLine("Printing Updated Task \n" + ListOfTasks[0]);
-                        break;
+
                     default:
                         Console.WriteLine("Invalid input");
                         break;
