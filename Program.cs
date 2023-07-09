@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using static Task_Tracker.TaskManager;
+using Spectre.Console;
 
 namespace Task_Tracker // Note: actual namespace depends on the project name.
 {
@@ -12,7 +13,6 @@ namespace Task_Tracker // Note: actual namespace depends on the project name.
         {
             var tm = new TaskManager();
             tm.Execute();
-
         }
     }
 }

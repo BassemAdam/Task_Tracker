@@ -50,7 +50,7 @@ namespace Task_Tracker
                 Status.NotCompleted));
 
             //teting toString Method 
-            Console.WriteLine("Testing toString Method \n" + ListOfTasks[0]);
+            //Console.WriteLine("Testing toString Method \n" + ListOfTasks[0]);
 
             ListOfTasks.Add(new Task(
                 "Task 2",
@@ -63,8 +63,7 @@ namespace Task_Tracker
 
             ListOfTasks.Add(DuplicateTask(ListOfTasks[0]));
 
-
-            //* Input
+            Ui.displayTaskMenu(ListOfTasks);
             var input = (UtilChoice)Convert.ToInt32(Console.ReadLine());
 
             while (input != UtilChoice.Exit)
