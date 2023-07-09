@@ -96,7 +96,7 @@ namespace Task_Tracker
                             var filtered = Filter(FilterType.Deadline, Priority.Medium);
                             filtered.ForEach(t => Console.WriteLine(t.Title));
                         }
-                        catch (Exception e) when (e is UtilFilterException || e is UtilFilterCriteriaException)
+                        catch (Exception e) when (e is UtilFilterException or UtilFilterCriteriaException)
                         {
                             Console.WriteLine(e.Message);
                         }
