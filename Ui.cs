@@ -169,11 +169,10 @@ namespace Task_Tracker
                 .Title("Which task would you like to update?")
                 .AddChoices(titles));
 
-            int titleIndex = (title[0]) - 49;
+            int titleIndex = (title[0]) - 49; //funny code
 
             var selectedTask = listOfTasks[titleIndex];
 
-            //TODO: Fix error where updating task also updates other tasks with same 
             Console.Clear();
             var panel2 = new Panel($"[pink1]Update Task: {selectedTask.Title}[/]");
             AnsiConsole.Write(panel2);
