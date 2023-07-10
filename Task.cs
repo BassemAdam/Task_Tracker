@@ -23,9 +23,8 @@ namespace Task_Tracker
         private int uniqueIdentifier;
         private string title; //mandatory
         private string description;
-        private DateTime startdate;
-        private DateTime deadline;  //private DateTime deadline = new DateTime(2023, 12, 31, 23, 59, 59);
         private TimeSpan duration;
+        private DateTime deadline;  //private DateTime deadline = new DateTime(2023, 12, 31, 23, 59, 59);
         private Priority priority;
         private List<string> tags;
         private Status status;
@@ -81,11 +80,6 @@ namespace Task_Tracker
         {
             get => status;
             set => status = value;
-        }
-
-        public DateTime Startdate {
-            get => startdate;
-            set => startdate =  value; 
         }
 
         #endregion
