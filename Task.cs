@@ -9,7 +9,7 @@ namespace Task_Tracker
 
     #region enums
     enum Status { NotCompleted, NotPursuing, Completed }
-    enum Priority { Low, Medium, High }
+    enum Priority { Skip, Low, Medium, High }
     #endregion
 
     internal class Task
