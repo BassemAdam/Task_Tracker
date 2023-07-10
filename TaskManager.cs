@@ -19,15 +19,14 @@ namespace Task_Tracker
             Delete,
             Sort,
             Filter,
-            Exit,            
+            Exit,
         }
 
         enum UtilProperty
         {
             Title,
             Description,
-            //Duration,
-            StartDate,
+            Duration,
             Deadline,
             Priority,
             Tags,
@@ -43,8 +42,8 @@ namespace Task_Tracker
             ListOfTasks.Add(new Task(
                 "Task 1",
                 "Task 1 Description",
+                new TimeSpan(5, 45, 15),
                 DateTime.Now,
-                new DateTime(2023,7,10,11,59,59),
                 Priority.High,
                 new List<string> { "Task 1", "3H" },
                 Status.NotCompleted));
@@ -55,14 +54,14 @@ namespace Task_Tracker
             ListOfTasks.Add(new Task(
                 "Task 2",
                 "Task 2 Description",
+                new TimeSpan(4, 30, 0),
                 DateTime.Now,
-                new DateTime(2023,7,12,8,59,59),
                 Priority.Medium,
                 new List<string> { "Task 3", "4M" },
                 Status.NotCompleted));
 
             ListOfTasks.Add(DuplicateTask(ListOfTasks[0]));
-           
+
             UtilChoice input = Enum.Parse<UtilChoice>(Ui.DisplayTaskMenu(ListOfTasks));
 
             while (input != UtilChoice.Exit)
@@ -88,8 +87,8 @@ namespace Task_Tracker
                         Console.WriteLine("Sort");
                         try
                         {
-                            (string,string) sort = Ui.DisplaySortMenu();
-                            var sorted = Sort(sort.Item1,sort.Item2);
+                            (string, string) sort = Ui.DisplaySortMenu();
+                            var sorted = Sort(sort.Item1, sort.Item2);
                             ListOfTasks = sorted;
                         }
                         catch (UtilSortException e)
@@ -105,7 +104,7 @@ namespace Task_Tracker
                             var filtered = Filter(FilterType.Deadline, Priority.Medium);
                             filtered.ForEach(t => Console.WriteLine(t.Title));
                         }
-                        catch (Exception e) when (e is UtilFilterException || e is UtilFilterCriteriaException)
+                        catch (Exception e) when (e is UtilFilterException or UtilFilterCriteriaException)
                         {
                             Console.WriteLine(e.Message);
                         }
@@ -165,8 +164,7 @@ namespace Task_Tracker
             Console.WriteLine("what exactly you want to edit ?");
             Console.WriteLine("1. Title");
             Console.WriteLine("2. Description");
-            //Console.WriteLine("3. Duration");
-            Console.WriteLine("3. StartDate");
+            Console.WriteLine("3. Duration");
             Console.WriteLine("4. Deadline");
             Console.WriteLine("5. Priority");
             Console.WriteLine("6. Tags");
@@ -186,9 +184,9 @@ namespace Task_Tracker
                         Console.WriteLine("Enter the new description");
                         task.Description = Console.ReadLine();
                         break;
-                    case UtilProperty.StartDate:
-                        Console.WriteLine("Enter the new startDate");
-                        task.StartDate = DateTime.Parse(Console.ReadLine());
+                    case UtilProperty.Duration:
+                        Console.WriteLine("Enter the new duration");
+                        task.Duration = TimeSpan.Parse(Console.ReadLine());
                         break;
                     case UtilProperty.Deadline:
                         Console.WriteLine("Enter the new deadline");
@@ -312,8 +310,8 @@ namespace Task_Tracker
         private List<Task> Sort(string _sortBy, string _sortOrder)
         {
             var sorted = ListOfTasks;
-            
-            UtilSortBy sortBy = (UtilSortBy)Enum.Parse(typeof(UtilSortBy),_sortBy);
+
+            UtilSortBy sortBy = (UtilSortBy)Enum.Parse(typeof(UtilSortBy), _sortBy);
             UtilSortOrder sortOrder = (UtilSortOrder)Enum.Parse(typeof(UtilSortOrder), _sortOrder);
 
             try
