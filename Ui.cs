@@ -156,9 +156,12 @@ namespace Task_Tracker
 
 
             List<string> titles = new List<string>();
+
+            int index = 1;
+
             foreach (var task in listOfTasks)
             {
-                titles.Add(task.Title);
+                titles.Add($"{index++}. {task.Title}");
             }
 
             var title = AnsiConsole.Prompt(
@@ -166,7 +169,7 @@ namespace Task_Tracker
                 .Title("Which task would you like to update?")
                 .AddChoices(titles));
 
-            int titleIndex = titles.IndexOf(title);
+            int titleIndex = (title[0]) - 49;
 
             var selectedTask = listOfTasks[titleIndex];
 
