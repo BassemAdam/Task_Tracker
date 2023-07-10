@@ -9,7 +9,7 @@ namespace Task_Tracker
 
     #region enums
     enum Status { NotCompleted, NotPursuing, Completed }
-    enum Priority { Low, Medium, High }
+    enum Priority { Skip, Low, Medium, High }
     #endregion
 
     internal class Task
@@ -85,7 +85,7 @@ namespace Task_Tracker
         #endregion
 
         #region Constructor
-        public Task(string _title, string _description = "empty", TimeSpan _duration = default,
+        public Task(string _title, string _description = "empty",TimeSpan _duration = default,
             DateTime _deadline = default, Priority _priority = Priority.Medium, List<string> _tags = null, Status _status = Status.NotCompleted)
 
         {
@@ -94,8 +94,8 @@ namespace Task_Tracker
             uniqueIdentifier = UtilCounter;
             title = _title;
             description = _description;
-            duration = _duration;
             deadline = _deadline;
+            duration = _duration;
             priority = _priority;
             tags = _tags;
             status = _status;
@@ -111,8 +111,8 @@ namespace Task_Tracker
             uniqueIdentifier = UtilCounter;
             title = task.title;
             description = task.description;
-            duration = task.duration;
             deadline = task.deadline;
+            duration = task.duration;
             priority = task.priority;
             tags = task.tags;
             status = task.status;
@@ -125,7 +125,7 @@ namespace Task_Tracker
             return "Task ID: " + uniqueIdentifier + "\n" +
                 "Title: " + title + "\n" +
                 "Description: " + description + "\n" +
-                "Duration: " + duration + "\n" +
+                "Duration: " + duration + "\n" +               
                 "Deadline: " + deadline + "\n" +
                 "Priority: " + priority + "\n" +
                 "Tags: " + string.Join(' ',tags) + "\n" +

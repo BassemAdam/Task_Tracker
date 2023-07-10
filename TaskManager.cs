@@ -15,19 +15,19 @@ namespace Task_Tracker
         enum UtilChoice
         {
             Add,
-            Edit,
+            Update,
+            Delete,
             Sort,
             Filter,
-            Exit,
-            Delete,
-            Update
+            Exit,            
         }
 
         enum UtilProperty
         {
             Title,
             Description,
-            Duration,
+            //Duration,
+            StartDate,
             Deadline,
             Priority,
             Tags,
@@ -43,29 +43,27 @@ namespace Task_Tracker
             ListOfTasks.Add(new Task(
                 "Task 1",
                 "Task 1 Description",
-                new TimeSpan(5, 45, 15),
                 DateTime.Now,
+                new DateTime(2023,7,10,11,59,59),
                 Priority.High,
                 new List<string> { "Task 1", "3H" },
                 Status.NotCompleted));
 
             //teting toString Method 
-            Console.WriteLine("Testing toString Method \n" + ListOfTasks[0]);
+            //Console.WriteLine("Testing toString Method \n" + ListOfTasks[0]);
 
             ListOfTasks.Add(new Task(
                 "Task 2",
                 "Task 2 Description",
-                new TimeSpan(4, 30, 0),
                 DateTime.Now,
+                new DateTime(2023,7,12,8,59,59),
                 Priority.Medium,
                 new List<string> { "Task 3", "4M" },
                 Status.NotCompleted));
 
             ListOfTasks.Add(DuplicateTask(ListOfTasks[0]));
-
-
-            //* Input
-            var input = (UtilChoice)Convert.ToInt32(Console.ReadLine());
+           
+            UtilChoice input = Enum.Parse<UtilChoice>(Ui.DisplayTaskMenu(ListOfTasks));
 
             while (input != UtilChoice.Exit)
             {
@@ -73,22 +71,33 @@ namespace Task_Tracker
                 {
                     case UtilChoice.Add:
                         Console.WriteLine("Add");
+                        ListOfTasks.Add(Ui.DisplayAddMenu());
                         break;
-                    case UtilChoice.Edit:
-                        Console.WriteLine("Edit");
+
+                    case UtilChoice.Update:
+                        Console.WriteLine("Update");
+                        Ui.DisplayUpdateMenu(ListOfTasks);
                         break;
+
+                    case UtilChoice.Delete:
+                        Ui.DisplayDeleteMenu(ListOfTasks);
+                        break;
+
+                    //TODO: Make Sort and Filter not permanent
                     case UtilChoice.Sort:
                         Console.WriteLine("Sort");
                         try
                         {
-                            var sorted = Sort(UtilSortBy.Duration, UtilSortOrder.Ascending);
-                            sorted.ForEach(t => Console.WriteLine(t.Title));
+                            (string,string) sort = Ui.DisplaySortMenu();
+                            var sorted = Sort(sort.Item1,sort.Item2);
+                            ListOfTasks = sorted;
                         }
                         catch (UtilSortException e)
                         {
                             Console.WriteLine(e.Message);
                         }
                         break;
+
                     case UtilChoice.Filter:
                         Console.WriteLine("Filter");
                         try
@@ -96,25 +105,19 @@ namespace Task_Tracker
                             var filtered = Filter(FilterType.Deadline, Priority.Medium);
                             filtered.ForEach(t => Console.WriteLine(t.Title));
                         }
-                        catch (Exception e) when (e is UtilFilterException or UtilFilterCriteriaException)
+                        catch (Exception e) when (e is UtilFilterException || e is UtilFilterCriteriaException)
                         {
                             Console.WriteLine(e.Message);
                         }
                         break;
-                    case UtilChoice.Delete:
-                        Console.WriteLine("Delete");
-                        break;
-                    case UtilChoice.Update:
-                        Console.WriteLine("Update");
-                        UpdateTask(ListOfTasks[0]);
-                        Console.WriteLine("Printing Updated Task \n" + ListOfTasks[0]);
-                        break;
+
                     default:
                         Console.WriteLine("Invalid input");
                         break;
                 }
 
-                input = (UtilChoice)Convert.ToInt32(Console.ReadLine());
+                Console.Clear();
+                input = Enum.Parse<UtilChoice>(Ui.DisplayTaskMenu(ListOfTasks));
             }
 
 
@@ -156,13 +159,14 @@ namespace Task_Tracker
         #endregion
 
         //-----------------------------------------------Task Updating 3.3 Section related functions------------------------------
-        #region UpdateTask
+        /*        #region UpdateTask
         private void UpdateTask(Task task)
         {
             Console.WriteLine("what exactly you want to edit ?");
             Console.WriteLine("1. Title");
             Console.WriteLine("2. Description");
-            Console.WriteLine("3. Duration");
+            //Console.WriteLine("3. Duration");
+            Console.WriteLine("3. StartDate");
             Console.WriteLine("4. Deadline");
             Console.WriteLine("5. Priority");
             Console.WriteLine("6. Tags");
@@ -182,9 +186,9 @@ namespace Task_Tracker
                         Console.WriteLine("Enter the new description");
                         task.Description = Console.ReadLine();
                         break;
-                    case UtilProperty.Duration:
-                        Console.WriteLine("Enter the new duration");
-                        task.Duration = TimeSpan.Parse(Console.ReadLine());
+                    case UtilProperty.StartDate:
+                        Console.WriteLine("Enter the new startDate");
+                        task.StartDate = DateTime.Parse(Console.ReadLine());
                         break;
                     case UtilProperty.Deadline:
                         Console.WriteLine("Enter the new deadline");
@@ -232,7 +236,7 @@ namespace Task_Tracker
         {
             ListOfTasks.Remove(task);
         }
-        #endregion
+        #endregion*/
 
         #region  DesignateTask
         //optional OPTIONAL: The user should have the option to designate a task as ‘Not Pursuing’,
@@ -248,6 +252,7 @@ namespace Task_Tracker
 
         private List<Task> Filter(FilterType filterType, object criteria)
         {
+
             var filteredTasks = new List<Task>();
 
             try
@@ -304,10 +309,12 @@ namespace Task_Tracker
             Descending
         }
 
-        private List<Task> Sort(UtilSortBy sortBy, UtilSortOrder sortOrder)
+        private List<Task> Sort(string _sortBy, string _sortOrder)
         {
             var sorted = ListOfTasks;
-
+            
+            UtilSortBy sortBy = (UtilSortBy)Enum.Parse(typeof(UtilSortBy),_sortBy);
+            UtilSortOrder sortOrder = (UtilSortOrder)Enum.Parse(typeof(UtilSortOrder), _sortOrder);
 
             try
             {
