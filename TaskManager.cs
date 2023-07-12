@@ -51,14 +51,14 @@ namespace Task_Tracker
             //teting toString Method 
             //Console.WriteLine("Testing toString Method \n" + ListOfTasks[0]);
 
-            ListOfTasks.Add(new Task(
-                "Task 2",
-                "Task 2 Description",
-                new TimeSpan(4, 30, 0),
-                DateTime.Now,
-                Priority.Medium,
-                new List<string> { "Task 3", "4M" },
-                Status.NotCompleted));
+            //ListOfTasks.Add(new Task(
+            //    "Task 2",
+            //    "Task 2 Description",
+            //    new TimeSpan(4, 30, 0),
+            //    DateTime.Now,
+            //    Priority.Medium,
+            //    new List<string> { "Task 3", "4M" },
+            //    Status.NotCompleted));
 
             ListOfTasks.Add(DuplicateTask(ListOfTasks[0]));
 
