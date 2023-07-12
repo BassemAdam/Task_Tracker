@@ -119,6 +119,22 @@ namespace Task_Tracker
         }
         #endregion
 
+        #region DefaultConstructor 
+        public Task()
+        {
+            NumberOfTasks++;
+            UtilCounter++;
+            uniqueIdentifier = UtilCounter;
+            title = "-";
+            description = "-";
+            duration = default;
+            deadline = default;
+            priority = Priority.Low;
+            tags = null;
+            status = Status.NotCompleted;
+        }
+        #endregion
+
         #region ToStringMethod
         public override string ToString()
         {
