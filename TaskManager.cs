@@ -42,14 +42,14 @@ namespace Task_Tracker
         {
             ReadData();
             //* Adding some example tasks to list of tasks
-            ListOfTasks.Add(new Task(
-                "Task 1",
-                "Task 1 Description",
-                new TimeSpan(5, 45, 15),
-                DateTime.Now,
-                Priority.High,
-                new List<string> { "Task 1", "3H" },
-                Status.NotCompleted));
+            //ListOfTasks.Add(new Task(
+            //    "Task 1",
+            //    "Task 1 Description",
+            //    new TimeSpan(5, 45, 15),
+            //    DateTime.Now,
+            //    Priority.High,
+            //    new List<string> { "Task 1", "3H" },
+            //    Status.NotCompleted));
 
             //teting toString Method 
             //Console.WriteLine("Testing toString Method \n" + ListOfTasks[0]);
@@ -63,7 +63,7 @@ namespace Task_Tracker
                 new List<string> { "Task 3", "4M" },
                 Status.NotCompleted));
 
-            ListOfTasks.Add(DuplicateTask(ListOfTasks[0]));
+            //ListOfTasks.Add(DuplicateTask(ListOfTasks[0]));
 
             UtilChoice input = Enum.Parse<UtilChoice>(Ui.DisplayTaskMenu(ListOfTasks));
 
