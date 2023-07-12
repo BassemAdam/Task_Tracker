@@ -43,7 +43,7 @@ namespace Task_Tracker
                 "Task 1",
                 "Task 1 Description",
                 new TimeSpan(5, 45, 15),
-                DateTime.Now,
+                DateTime.Now + TimeSpan.FromSeconds(5),
                 Priority.High,
                 new List<string> { "Task 1", "3H" },
                 Status.NotCompleted));
@@ -55,14 +55,12 @@ namespace Task_Tracker
                 "Task 2",
                 "Task 2 Description",
                 new TimeSpan(4, 30, 0),
-                DateTime.Now,
+                DateTime.Now + TimeSpan.FromSeconds(20),
                 Priority.Medium,
                 new List<string> { "Task 3", "4M" },
                 Status.NotCompleted));
 
-            ListOfTasks.Add(DuplicateTask(ListOfTasks[0]));
-
-            UtilChoice input = Enum.Parse<UtilChoice>(Ui.DisplayTaskMenu(ListOfTasks));
+            var input = GetInput();
 
             while (input != UtilChoice.Exit)
             {
@@ -116,7 +114,7 @@ namespace Task_Tracker
                 }
 
                 Console.Clear();
-                input = Enum.Parse<UtilChoice>(Ui.DisplayTaskMenu(ListOfTasks));
+                input = GetInput();
             }
 
 
@@ -342,9 +340,81 @@ namespace Task_Tracker
 
         //-----------------------------------------------Advanced Features 3.5 Section related functions--------------------------
 
+        private bool isAwaitingInput = true;
+
+        private UtilChoice GetInput()
+        {
+            isAwaitingInput = true;
+
+            var input = UtilChoice.Exit;
+            var inputThread = new Thread(() =>
+            {
+                input = Enum.Parse<UtilChoice>(Ui.DisplayTaskMenu(ListOfTasks));
+            });
+            inputThread.Start();
+
+            var notificationsThread = new Thread(MonitorNotifications);
+
+            notificationsThread.Start();
+
+            while (inputThread.IsAlive)
+            {
+                Thread.Sleep(500);
+            }
+
+            isAwaitingInput = false;
+            notificationsThread.Interrupt();
 
 
+            inputThread.Join();
+            notificationsThread.Join();
 
+            return input;
+        }
 
+        private void MonitorNotifications()
+        {
+            while (isAwaitingInput)
+            {
+                var timeTillNextDeadline = Notify();
+                if (timeTillNextDeadline.Seconds > 0)
+                {
+                    try
+                    {
+                        Thread.Sleep(timeTillNextDeadline);
+                    }
+                    catch (ThreadInterruptedException)
+                    {
+                        return;
+                    }
+                }
+            }
+        }
+
+        private TimeSpan Notify()
+        {
+            // TODO: Fix this with Ziad
+            var sortedActiveTasks = Sort(nameof(UtilSortBy.Deadline), nameof(UtilSortOrder.Ascending));
+            var activeTasks = sortedActiveTasks.Where(t => !t.IsPastDeadline);
+            var nearestTask = activeTasks.FirstOrDefault();
+
+            if (nearestTask == default) return TimeSpan.FromSeconds(-1);
+
+            // Calculate the approximate time when the nearest task's deadline will be reached.
+            var deadline = nearestTask.Deadline;
+            var currentTime = DateTime.Now;
+            var timeTillDeadline = deadline - currentTime;
+
+            // If the time to beep is less than or equal to 0, then beep.
+            if (timeTillDeadline.Seconds <= 0)
+            {
+                Console.Beep();
+                var taskIndex = ListOfTasks.FindIndex(t => t.UniqueIdentifier == nearestTask.UniqueIdentifier);
+                ListOfTasks[taskIndex].IsPastDeadline = true;
+
+            }
+
+            return timeTillDeadline;
+        }
     }
 }

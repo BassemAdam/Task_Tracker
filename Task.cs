@@ -28,6 +28,7 @@ namespace Task_Tracker
         private Priority priority;
         private List<string> tags;
         private Status status;
+        private bool isPastDeadline = false;
         #endregion
 
         //-----------------------------------------------Methods--------------------------------------------------------------
@@ -80,6 +81,11 @@ namespace Task_Tracker
         {
             get => status;
             set => status = value;
+        }
+        public bool IsPastDeadline
+        {
+            get => isPastDeadline;
+            set => isPastDeadline = value;
         }
 
         #endregion

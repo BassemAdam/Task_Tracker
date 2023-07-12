@@ -22,7 +22,7 @@ namespace Task_Tracker
             table.AddColumn("Tags");
             table.AddColumn("Status");
 
-            foreach (var task in listOfTasks)
+            foreach (var task in listOfTasks.ToList())
             {
                 if (task.Status != Status.NotPursuing)
                 {
@@ -64,12 +64,12 @@ namespace Task_Tracker
             var title = AnsiConsole.Prompt(
                 new TextPrompt<string>("[blue]Title?[/]")
                 .Validate(title => title.Length > 0 ? ValidationResult.Success() : ValidationResult.Error("Title cannot be empty")
-                )) ;
-            
+                ));
+
             var description = AnsiConsole.Prompt(
                 new TextPrompt<string>("[grey][[Optional]] [/][blue]Description?[/]")
                 .AllowEmpty());
-            
+
             //guys i am so sorry for what comes next
             var durationString = AnsiConsole.Prompt(
                 new TextPrompt<string>("[grey][[Optional]] [/][blue]Duration?[/]")
@@ -125,7 +125,7 @@ namespace Task_Tracker
                     "Medium",
                     "High",
                 }));
-            
+
             var priority = (Priority)Enum.Parse(typeof(Priority), priorityString);
 
             List<string> tags = new List<string>();
@@ -147,7 +147,7 @@ namespace Task_Tracker
             return new Task(title, description, duration, deadline, priority, tags);
 
         }
-        
+
         public static void DisplayUpdateMenu(List<Task> listOfTasks)
         {
             Console.Clear();
@@ -199,7 +199,7 @@ namespace Task_Tracker
                                             .Validate(title => title.Length > 0 ? ValidationResult.Success() : ValidationResult.Error("Title cannot be empty")));
                         break;
                     case "Description":
-                        selectedTask.Description =  AnsiConsole.Prompt(
+                        selectedTask.Description = AnsiConsole.Prompt(
                                                     new TextPrompt<string>("[blue]New Description?[/]")
                                                     .AllowEmpty());
                         break;
@@ -386,7 +386,7 @@ namespace Task_Tracker
                 titles.Add(task.Title);
             }
 
-            if(titles.Count == 0)
+            if (titles.Count == 0)
             {
                 Console.WriteLine("There are no tasks to delete");
                 return;
@@ -402,7 +402,7 @@ namespace Task_Tracker
             listOfTasks.Remove(selectedTask);
         }
 
-        public static (string,string) DisplaySortMenu()
+        public static (string, string) DisplaySortMenu()
         {
             Console.Clear();
             var panel = new Panel("[pink1]Sort tasks[/]");
@@ -423,12 +423,12 @@ namespace Task_Tracker
                     .AddChoices(new[] {
                         "Ascending",
                         "Descending"
-                    }));    
+                    }));
 
             return (sortBy, sortOrder);
         }
 
-        public static (string,string) DisplayFilterMenu()
+        public static (string, string) DisplayFilterMenu()
         {
             Console.Clear();
             var panel = new Panel("[pink1]Filter tasks[/]");
