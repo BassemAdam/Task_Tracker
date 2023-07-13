@@ -346,6 +346,7 @@ namespace Task_Tracker
 
         //-----------------------------------------------Advanced Features 3.5 Section related functions--------------------------
 
+        //-----------------------------------------------Notifications--------------------------------------------------------
         private bool isAwaitingInput = true;
 
         private UtilChoice GetInput()
@@ -403,6 +404,26 @@ namespace Task_Tracker
             var sortedActiveTasks = Sort(nameof(UtilSortBy.Deadline), nameof(UtilSortOrder.Ascending));
             var activeTasks = sortedActiveTasks.Where(t => !t.IsPastDeadline);
             var nearestTask = activeTasks.FirstOrDefault();
+
+            if (nearestTask == default) return TimeSpan.FromSeconds(-1);
+
+            // Calculate the approximate time when the nearest task's deadline will be reached.
+            var deadline = nearestTask.Deadline;
+            var currentTime = DateTime.Now;
+            var timeTillDeadline = deadline - currentTime;
+
+            // If the time to beep is less than or equal to 0, then beep.
+            if (timeTillDeadline.Seconds <= 0)
+            {
+                Console.Beep();
+                var taskIndex = ListOfTasks.FindIndex(t => t.UniqueIdentifier == nearestTask.UniqueIdentifier);
+                ListOfTasks[taskIndex].IsPastDeadline = true;
+
+            }
+
+            return timeTillDeadline;
+        }
+
         //-----------------------------------------------Local File Saving--------------------------------------------------------
 
         private void ReadData()
@@ -445,28 +466,9 @@ namespace Task_Tracker
             {
                 var jsonString = JsonConvert.SerializeObject(task);
                 sw.WriteLine(jsonString);
-                        }
+            }
             sw.Close();
             return;
-        }
-
-            if (nearestTask == default) return TimeSpan.FromSeconds(-1);
-
-            // Calculate the approximate time when the nearest task's deadline will be reached.
-            var deadline = nearestTask.Deadline;
-            var currentTime = DateTime.Now;
-            var timeTillDeadline = deadline - currentTime;
-
-            // If the time to beep is less than or equal to 0, then beep.
-            if (timeTillDeadline.Seconds <= 0)
-            {
-                Console.Beep();
-                var taskIndex = ListOfTasks.FindIndex(t => t.UniqueIdentifier == nearestTask.UniqueIdentifier);
-                ListOfTasks[taskIndex].IsPastDeadline = true;
-
-            }
-
-            return timeTillDeadline;
         }
     }
 }
