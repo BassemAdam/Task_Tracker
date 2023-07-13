@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Task_Tracker.Exceptions;
+using Newtonsoft.Json;
+using System.IO;
+using System.Text.Json.Serialization;
 
 namespace Task_Tracker
 {
@@ -37,7 +40,7 @@ namespace Task_Tracker
         #region Execute
         public void Execute()
         {
-
+            ReadData();
             //* Adding some example tasks to list of tasks
             ListOfTasks.Add(new Task(
                 "Task 1",
@@ -69,15 +72,18 @@ namespace Task_Tracker
                     case UtilChoice.Add:
                         Console.WriteLine("Add");
                         ListOfTasks.Add(Ui.DisplayAddMenu());
+                        WriteData();
                         break;
 
                     case UtilChoice.Update:
                         Console.WriteLine("Update");
                         Ui.DisplayUpdateMenu(ListOfTasks);
+                        WriteData();
                         break;
 
                     case UtilChoice.Delete:
                         Ui.DisplayDeleteMenu(ListOfTasks);
+                        WriteData();
                         break;
 
                     //TODO: Make Sort and Filter not permanent
@@ -397,6 +403,52 @@ namespace Task_Tracker
             var sortedActiveTasks = Sort(nameof(UtilSortBy.Deadline), nameof(UtilSortOrder.Ascending));
             var activeTasks = sortedActiveTasks.Where(t => !t.IsPastDeadline);
             var nearestTask = activeTasks.FirstOrDefault();
+        //-----------------------------------------------Local File Saving--------------------------------------------------------
+
+        private void ReadData()
+        {
+            string currentdirectory = Directory.GetCurrentDirectory();
+            string path = currentdirectory + @"\tasks.json";
+            if (!File.Exists(path))
+            {
+                FileStream taskfile = File.Create(path);
+                return;
+            }
+            else
+            {
+                try
+                {
+                    StreamReader sr = new StreamReader(path);
+                    string taskjsonstring;
+                    while ((taskjsonstring = sr.ReadLine()) != null)
+                    {
+                        Task task = JsonConvert.DeserializeObject<Task>(taskjsonstring);
+                        ListOfTasks.Add(task);
+                    }
+                    sr.Close();
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            return;
+        }
+
+        private void WriteData()
+        {
+            string currentdirectory = Directory.GetCurrentDirectory();
+            string path = currentdirectory + @"\tasks.json";
+            StreamWriter sw = new StreamWriter(path);
+            foreach (var task in ListOfTasks)
+            {
+                var jsonString = JsonConvert.SerializeObject(task);
+                sw.WriteLine(jsonString);
+                        }
+            sw.Close();
+            return;
+        }
 
             if (nearestTask == default) return TimeSpan.FromSeconds(-1);
 
